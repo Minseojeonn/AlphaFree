@@ -42,7 +42,7 @@ chmod +x download.sh
 
 ## 🚀 Usage
 ### Train our model from scratch
-You can train the `AlphaFree` with the best hyperparameters for each dataset by typing the following command in your terminal:
+You can train `AlphaFree` with the best hyperparameters for each dataset by typing the following command in your terminal:
 
 #### Train AlphaFree in the `Movie` dataset
 ```bash
