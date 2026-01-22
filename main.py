@@ -11,7 +11,7 @@ if __name__ == '__main__':
     # Phase preprocessing : data preprocessing (Language Representation Generation, Augmentations ..)
     # No need to run this phase independently, it will be called in the training phase automatically
     if args.phase == 'preprocessing':
-        data = AlphaFreeData(args)
+        AlphaFreeData(args)
     
     # Phase inference : inference using pre-trained model.
     elif args.phase == 'inference':
