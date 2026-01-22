@@ -6,12 +6,12 @@ if ! command -v gdown &> /dev/null; then
 fi
 
 declare -A FILES
-FILES["steam.zip"]="1BuEJPAZFnLTjrC8x0M5RvhRdTxq4qnT0"
+FILES["steam.zip"]="1pUaW4cl56VpwtH6ICCKn_HQUlqqN71KL"
 FILES["amazon_movie.zip"]="10P4C2DF8XqJVkxQlkA2kqzzG1ZNdkrgZ"
 FILES["amazon_book_2014.zip"]="1oHc-5aFqJnD9U2__r-gpfmV-k0dzMJYK"
-FILES["amazon_video.zip"]="1pdhQLBhyrIrQV4BwYAn5S0RQslg8RKow"
-FILES["amazon_baby.zip"]="1Oeud32uXAYaRRvCotXWkF5NZQNOrNiEi"
-FILES["amazon_beauty_personal.zip"]="1pAwMK52yQD25efL1oKrSWrDInoH3QqvC"
+FILES["amazon_video.zip"]="1BUm2k4Yn2oPLgQTzLvQncgPZqpvmCT7j"
+FILES["amazon_baby.zip"]="1D3ukli7JKVY5zv5Km3Q8bvkaTEt0KBUJ"
+FILES["amazon_beauty_personal.zip"]="1TY4iWVJQZ1DgVc74ZwQz5k1aRrxfDW0Z"
 FILES["amazon_health.zip"]="1ZBryoZ6rO6lQ9fID8Fw1_xD-qTW4187y"
 echo "Select a file to download:"
 select NAME in "${!FILES[@]}"; do
