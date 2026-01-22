@@ -228,7 +228,7 @@ class AlphaFreeData(AbstractData):
             print("No language representations found, start generating ...")
             self.generate_language_representations(args)
         
-        # First time preprocessing
+        # Preprocessing - augmentations
         if os.path.isdir(args.data_path + args.dataset + '/preprocessed/') == False:
             print("No saved augmentations, start preprocessing ...")
             ## Load language model representations
