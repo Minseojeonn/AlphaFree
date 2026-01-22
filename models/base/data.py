@@ -205,7 +205,7 @@ class TrainDataset(torch.utils.data.Dataset):
 class AlphaFree_Data(AbstractData):
     '''
     Data Class for AlphaFree model
-    Appendix D. Algorithm 1 Preprocessing pahse of AlphaFree
+    Appendix D. Algorithm 1 Preprocessing phase of AlphaFree
     '''
     def __init__(self, args):
         super().__init__(args)
