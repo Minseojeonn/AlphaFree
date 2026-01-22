@@ -1,4 +1,4 @@
-from models.base.RS import AlphaFree_RS
+from models.base.RS import AlphaFreeRS
 from parse import parse_args
 from models.base.utils import fix_seeds
 
@@ -7,7 +7,7 @@ if __name__ == '__main__':
     print(args)
     fix_seeds(args.seed) 
     if args.model_name == 'AlphaFree':
-        RS = AlphaFree_RS(args, special_args)
+        RS = AlphaFreeRS(args, special_args)
         RS.execute()
     else:
         print("Model not implemented!")

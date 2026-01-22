@@ -1,4 +1,4 @@
-from models.AlphaFree_inference import AlphaFree_inference
+from AlphaFree.models.AlphaFreeInference import AlphaFreeInference
 from parse import parse_args
 import gdown
 import torch
@@ -17,7 +17,7 @@ if __name__ == '__main__':
     
     #demo model inference load
     args, special_args = parse_args() 
-    model = AlphaFree_inference(args)
+    model = AlphaFreeInference(args)
     checkpoint = torch.load(weight_file_path)
     state_dict = checkpoint['state_dict']
     filtered_state_dict = {k: v for k, v in state_dict.items() if k.startswith("mlp_origin.")}

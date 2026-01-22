@@ -1,6 +1,6 @@
 from .util.cython.tools import float_type, is_ndarray
-from .util import typeassert, argmax_top_k
-from .data import AbstractData, AlphaFree_Data
+from .util import argmax_top_k
+from .data import AlphaFree_Data
 from .evaluator.proxy_evaluator import ProxyEvaluator
 from .util import DataIterator
 from .utils import *
@@ -323,7 +323,7 @@ class AbstractRS(nn.Module):
 
         return evaluators, eval_names
 
-class AlphaFree_RS(AbstractRS):
+class AlphaFreeRS(AbstractRS):
     '''
     AlphaFree training class 
     '''
