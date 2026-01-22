@@ -3,6 +3,7 @@ from .base.utils import csr_to_torch_sparse
 import torch.nn.functional as F
 import torch.nn as nn
 import torch
+from base.data import AlphaFreeData 
 
 class AlphaFree(AbstractModel):
     '''AlphaFree Model'''

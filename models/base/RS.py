@@ -1,6 +1,6 @@
 from .util.cython.tools import float_type, is_ndarray
 from .util import argmax_top_k
-from .data import AlphaFree_Data
+from .data import AlphaFreeData
 from .evaluator.proxy_evaluator import ProxyEvaluator
 from .util import DataIterator
 from .utils import *
@@ -39,7 +39,7 @@ class AbstractRS(nn.Module):
 
         self.dataset_name = args.dataset
 
-        self.data = AlphaFree_Data(args)
+        self.data = AlphaFreeData(args)
         
         self.n_users = self.data.n_users
         self.n_items = self.data.n_items

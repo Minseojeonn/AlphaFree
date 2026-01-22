@@ -11,6 +11,7 @@ import time
 import numpy as np
 import bisect
 import torch
+import os
 
 class AbstractData:
     '''
@@ -202,7 +203,7 @@ class TrainDataset(torch.utils.data.Dataset):
     def __len__(self):
         return self.n_observations
 
-class AlphaFree_Data(AbstractData):
+class AlphaFreeData(AbstractData):
     '''
     Data Class for AlphaFree model
     Appendix D. Algorithm 1 Preprocessing phase of AlphaFree
@@ -217,27 +218,46 @@ class AlphaFree_Data(AbstractData):
             'v3': 'item_cf_embeds_large3_array.npy',
             'llama': 'item_cf_embeds_LLAMA_array.npy'
         }
-        ## Load language model representations
-        self.item_cf_embeds_original = np.load(loading_path + embedding_path_dict[self.lm_model])
- 
-        pairs = []
-        for u, v in self.train_user_list.items():
-            for i in v:
-                pairs.append((u, i))
-        pairs = pd.DataFrame(pairs, columns=['user_id', 'item_id'])
-        self.topk_indices = {}    
-        self.item_item_sim_dict, self.item_item_sim_matrix = self.build_item_knn_dict(pairs, args.K_c+1)
-        
-        ### Representation augmentation
-        self.item_cf_embeds_augmented = self.item_item_sim_matrix.dot(self.item_cf_embeds_original)
-        
-        ### Interaction augmentation.
-        row = pairs['user_id'].tolist()
-        col = pairs['item_id'].tolist()
-        val = len(pairs) * [1.0]
-        self.user_interact_matrix = sparse.csr_matrix((val, (row, col)), shape=(self.n_users, self.n_items), dtype=np.float32)
-        self.user_interact_matrix = normalize(self.user_interact_matrix, norm='l1', axis=1)
-        self.aug_user_interact_matrix = self.augment_user_interact_matrix(pairs, self.item_item_sim_dict)
+        # No saved augmentations
+        if os.path.isdir(args.data_path + args.dataset + '/preprocessed/') == False:
+            print("No saved augmentations, start preprocessing ...")
+            ## Load language model representations
+            self.item_cf_embeds_original = np.load(loading_path + embedding_path_dict[self.lm_model])
+            
+            pairs = []
+            for u, v in self.train_user_list.items():
+                for i in v:
+                    pairs.append((u, i))
+            pairs = pd.DataFrame(pairs, columns=['user_id', 'item_id'])
+            self.topk_indices = {}    
+            self.item_item_sim_dict, self.item_item_sim_matrix = self.build_item_knn_dict(pairs, args.K_c+1)
+            
+            ### Representation augmentation
+            self.item_cf_embeds_augmented = self.item_item_sim_matrix.dot(self.item_cf_embeds_original)
+            
+            ### Interaction augmentation.
+            row = pairs['user_id'].tolist()
+            col = pairs['item_id'].tolist()
+            val = len(pairs) * [1.0]
+            self.user_interact_matrix = sparse.csr_matrix((val, (row, col)), shape=(self.n_users, self.n_items), dtype=np.float32)
+            self.user_interact_matrix = normalize(self.user_interact_matrix, norm='l1', axis=1)
+            self.aug_user_interact_matrix = self.augment_user_interact_matrix(pairs, self.item_item_sim_dict)
+            
+            # Save augmentations
+            save_path = args.data_path + args.dataset + '/preprocessed/'
+            if not os.path.exists(save_path):
+                os.makedirs(save_path)
+            sparse.save_npz(save_path + 'user_interact_matrix.npz', self.user_interact_matrix)
+            sparse.save_npz(save_path + 'aug_user_interact_matrix.npz', self.aug_user_interact_matrix)
+            np.save(save_path + 'item_cf_embeds_augmented.npy', self.item_cf_embeds_augmented)
+        # alpready saved augmentations
+        else:
+            print("Found saved augmentations, loading ...")
+            self.user_interaction_matrix = sparse.load_npz(args.data_path + args.dataset + '/preprocessed/user_interact_matrix.npz')
+            self.aug_user_interaction_matrix = sparse.load_npz(args.data_path + args.dataset + '/preprocessed/aug_user_interact_matrix.npz')
+            self.item_cf_embeds_original = np.load(loading_path + embedding_path_dict[self.lm_model])
+            self.item_cf_embeds_augmented = np.load(args.data_path + args.dataset + '/preprocessed/item_cf_embeds_augmented.npy')
+            
         torch.cuda.empty_cache()
 
     # Line 4-10 in Algorithm 1 (Preprocessing phase)

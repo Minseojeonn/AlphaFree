@@ -1,6 +1,7 @@
 from models.base.RS import AlphaFreeRS
 from models.base.parse import parse_args
 from models.base.utils import fix_seeds
+from models.base.data import AlphaFreeData 
 
 if __name__ == '__main__':
     args, special_args = parse_args()
@@ -9,9 +10,9 @@ if __name__ == '__main__':
     
     # Phase preprocessing : data preprocessing (Language Representation Generation, Augmentations ..)
     if args.phase == 'preprocessing':
-        pass
+        data = AlphaFreeData(args)
     
-    # Phase inference : only inference using pre-trained model 
+    # Phase inference : inference using pre-trained model 
     elif args.phase == 'inference':
         RS = AlphaFreeRS(args, special_args)
         RS.inference_only()
