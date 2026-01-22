@@ -331,7 +331,7 @@ class AbstractRS(nn.Module):
         
         
         file_name = './pretrained/' + dataset + '.pth.tar'
-        print("load {}", file_name)
+        print(f"load {file_name}")
         
         if os.path.isdir(f'./data/{dataset}') == False:
             raise Exception("Dataset not found. Please download the dataset first")
