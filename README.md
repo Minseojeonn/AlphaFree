@@ -93,11 +93,14 @@ python inference.py
 
 ### Trainlog
 You can find the training logs of our model in the ./log folder.<br>
-The test performance of the pre-trained AlphaFree on each dataset (based on ./log) is as follows:
+The test performance of the pre-trained AlphaFree on each dataset (based on ./log) is as follows: <br>
+(You can also check the recommendation performance with the pre-trained parameters we have provided.)
 | **AlphaFree** | **Movie**  |**Book**   | **Video**  | **Baby**   | **Steam**  | **Beauty** | **Health** |
 |-------------|--------|--------|--------|--------|--------|--------|--------|
 | **Recall@20** | 0.1267 | 0.1025 | 0.1117 | 0.0412 | 0.2400 | 0.0371 | 0.0333 |
 | **NDCG@20** | 0.1193 | 0.0869 | 0.0619 | 0.0221 | 0.1940 | 0.0205 | 0.0184 |
+
+
 
 ### Performance Table
 The reported results in the paper are as follows:
@@ -131,7 +134,7 @@ The reported results in the paper are as follows:
 * o.o.m. : Out of Memory
 
 ### Validated hyperparameters of AlphaFree
-| **Hpyerparam** | **Movie**  |**Book**   | **Video**  | **Baby**   | **Steam**  | **Beauty** | **Health** |
+| **Hyperparam** | **Movie**  |**Book**   | **Video**  | **Baby**   | **Steam**  | **Beauty** | **Health** |
 |:-------------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|
 | $K_c$      | 5 | 5 | 10 | 10 | 3 | 10 | 5 |
 | $\lambda_{\texttt{align}}$    | 0.2 | 0.2 | 0.05 | 0.01 | 0.01 | 0.01 | 0.01 |
