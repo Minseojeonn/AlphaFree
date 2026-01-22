@@ -221,6 +221,13 @@ class AlphaFreeData(AbstractData):
             'v3': 'item_cf_embeds_large3_array.npy',
             'llama': 'item_cf_embeds_LLAMA_array.npy'
         }
+        # Generate language representations if not exist
+        if os.path.isfile(loading_path + embedding_path_dict[self.lm_model]) == False:
+            if args.dataset == "amazon_book_2014" or args.dataset == "amazon_movie":
+                print("Please refer to the README file for this dataset.")
+            print("No language representations found, start generating ...")
+            self.generate_language_representations(args)
+        
         # First time preprocessing
         if os.path.isdir(args.data_path + args.dataset + '/preprocessed/') == False:
             print("No saved augmentations, start preprocessing ...")
@@ -264,9 +271,12 @@ class AlphaFreeData(AbstractData):
         torch.cuda.empty_cache()
 
     def generate_language_representations(self, args):
+        target_data = args.data_path + args.dataset + '/item_info/item_meta.json'
+        if os.path.isfile(target_data) == False:
+            print("No item title found for language representation generation ...")
+            raise FileNotFoundError
+        
         model_id = "meta-llama/Llama-3.1-8B"
-        target_data = "item_meta.json" 
-
         start_time = time.time()
         embed_pipeline = pipeline(
             "feature-extraction",
@@ -288,9 +298,10 @@ class AlphaFreeData(AbstractData):
             }
         item_list = list(cls_tokens.keys())
         emb_list = [cls_tokens[item]['embedding'] for item in sorted(item_list)]
-        np.save(open('item_cf_embeds_LLAMA_array.npy', 'wb'), np.array(emb_list))
+        np.save(open(f'{args.data_path}{args.dataset}/item_info/item_cf_embeds_LLAMA_array.npy', 'wb'), np.array(emb_list))
         end_time = time.time()
         print(f"Time taken: {end_time - start_time} seconds")
+        print("Language representations generated and saved.")
         
     def extract_embeddings(self, pipeline, texts, return_type="pt"):
         embeddings = pipeline(texts, return_tensors=return_type)
