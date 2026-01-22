@@ -96,8 +96,8 @@ You can find the training logs of our model in the ./log folder.<br>
 The test performance of the pre-trained AlphaFree on each dataset (based on ./log) is as follows:
 | **AlphaFree** | **Movie**  |**Book**   | **Video**  | **Baby**   | **Steam**  | **Beauty** | **Health** |
 |-------------|--------|--------|--------|--------|--------|--------|--------|
-| **Recall@20** | 0.1267 | 0.1025 | 0.1117 | 0.0412 | 0.2400 | TBD | TBD |
-| **NDCG@20** | 0.1193 | 0.0869 | 0.0619 | 0.0221 | 0.1940 | TBD | TBD |
+| **Recall@20** | 0.1267 | 0.1025 | 0.1117 | 0.0412 | 0.2400 | 0.0371 | 0.0333 |
+| **NDCG@20** | 0.1193 | 0.0869 | 0.0619 | 0.0221 | 0.1940 | 0.0205 | 0.0184 |
 
 ### Performance Table
 The reported results in the paper are as follows:
