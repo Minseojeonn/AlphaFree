@@ -1,5 +1,5 @@
-from AlphaFree.models.AlphaFreeRecDemo import AlphaFreeRecDemo
-from parse import parse_args
+from models.AlphaFreeRecDemo import AlphaFreeRecDemo
+from .models.base.parse import parse_args
 import gdown
 import torch
 import os
