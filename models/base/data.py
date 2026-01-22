@@ -4,6 +4,9 @@ from torch.utils.data import DataLoader
 from .utils import helper_load, helper_load_train
 from reckit import randint_choice
 from scipy import sparse
+from transformers import pipeline
+import json
+import pickle as pkl
 import pandas as pd
 import random as rd
 import collections
@@ -218,7 +221,7 @@ class AlphaFreeData(AbstractData):
             'v3': 'item_cf_embeds_large3_array.npy',
             'llama': 'item_cf_embeds_LLAMA_array.npy'
         }
-        # No saved augmentations
+        # First time preprocessing
         if os.path.isdir(args.data_path + args.dataset + '/preprocessed/') == False:
             print("No saved augmentations, start preprocessing ...")
             ## Load language model representations
@@ -250,16 +253,49 @@ class AlphaFreeData(AbstractData):
             sparse.save_npz(save_path + 'user_interact_matrix.npz', self.user_interact_matrix)
             sparse.save_npz(save_path + 'aug_user_interact_matrix.npz', self.aug_user_interact_matrix)
             np.save(save_path + 'item_cf_embeds_augmented.npy', self.item_cf_embeds_augmented)
-        # alpready saved augmentations
+        # Loading saved augmentations
         else:
             print("Found saved augmentations, loading ...")
-            self.user_interaction_matrix = sparse.load_npz(args.data_path + args.dataset + '/preprocessed/user_interact_matrix.npz')
-            self.aug_user_interaction_matrix = sparse.load_npz(args.data_path + args.dataset + '/preprocessed/aug_user_interact_matrix.npz')
+            self.user_interact_matrix = sparse.load_npz(args.data_path + args.dataset + '/preprocessed/user_interact_matrix.npz')
+            self.aug_user_interact_matrix = sparse.load_npz(args.data_path + args.dataset + '/preprocessed/aug_user_interact_matrix.npz')
             self.item_cf_embeds_original = np.load(loading_path + embedding_path_dict[self.lm_model])
             self.item_cf_embeds_augmented = np.load(args.data_path + args.dataset + '/preprocessed/item_cf_embeds_augmented.npy')
             
         torch.cuda.empty_cache()
 
+    def generate_language_representations(self, args):
+        model_id = "meta-llama/Llama-3.1-8B"
+        target_data = "item_meta.json" 
+
+        start_time = time.time()
+        embed_pipeline = pipeline(
+            "feature-extraction",
+            model=model_id,
+            tokenizer=model_id,
+            model_kwargs={"torch_dtype": torch.bfloat16},
+            device_map="auto"
+        )
+        df = pd.read_json(target_data)
+        cls_tokens = {}
+        for row in df.itertuples():
+            title = row.title
+            asin = row.parent_asin
+            item_idx = row.item_idx
+            cls_token = self.extract_embeddings(embed_pipeline, title, "pt")
+            cls_tokens[item_idx] = {
+                "embedding": cls_token,
+                "asin": asin
+            }
+        item_list = list(cls_tokens.keys())
+        emb_list = [cls_tokens[item]['embedding'] for item in sorted(item_list)]
+        np.save(open('item_cf_embeds_LLAMA_array.npy', 'wb'), np.array(emb_list))
+        end_time = time.time()
+        print(f"Time taken: {end_time - start_time} seconds")
+        
+    def extract_embeddings(self, pipeline, texts, return_type="pt"):
+        embeddings = pipeline(texts, return_tensors=return_type)
+        return embeddings[:, -1, :].float().squeeze().detach().cpu().numpy()
+    
     # Line 4-10 in Algorithm 1 (Preprocessing phase)
     def build_item_knn_dict(self, user_item_pairs, topk=3, batch_size=1024):
         row = user_item_pairs['user_id'].tolist()
