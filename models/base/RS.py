@@ -60,15 +60,13 @@ class AbstractRS(nn.Module):
 
     # Function inference process using pre-trained weights
     def inference_only(self):
-        self.model, self.start_epoch = self.restore_checkpoint_using_pretrain(self.model, self.dataset_name, self.device) # restore the checkpoint
+        self.model = self.restore_checkpoint_using_pretrain(self.model, self.dataset_name, self.device) # restore the checkpoint
         self.model.eval() # evaluate the best model
 
         n_rets = {}
         for i,evaluator in enumerate(self.evaluators[:]):
-            _, __, n_ret = evaluation(self.args, self.data, self.model, self.start_epoch, self.base_path, evaluator, self.eval_names[i])
-            n_rets[self.eval_names[i]] = n_ret
-
-        self.recommend_top_k()
+            if self.eval_names[i] == "test":
+                evaluation_inference(self.model, evaluator)
 
     # Function training process from scratch
     def execute(self):
@@ -331,19 +329,20 @@ class AbstractRS(nn.Module):
         Download pre-trained weights using google drive download.
         """
         
-        file_name = './pretrained/' + dataset + '.pth.tar'
         
-        if os.path.isfile(file_name) == False:
-            pretrain_file_id_dict = {
-                "amazon_movie": "1a-4vro-yS-trNguL7lnpzFvntHjCO3xj",
-                "amazon_book_2014": "1bXw1u6Yq8Tbv2rX5kz1k1K5b3F6ZlV3D",
-                "amazon_video": "1cYq3F2G7H8J9K0L1M2N3O4P5Q6R7S8T9",
-                "amazon_baby": "1dZx5Y6W7X8Y9Z0A1B2C3D4E5F6G7H8I9",
-                "steam": "1eA1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P",
-                "amazon_beauty_personal": "1fP1Q2R3S4T5U6V7W8X9Y0Z1A2B3C4D5E",
-                "amazon_health": "1gF6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U" 
-            }
-            download_from_gdrive("", pretrain_file_id_dict, file_name)
+        file_name = './pretrained/' + dataset + '.pth.tar'
+        print("load {}", file_name)
+        # if os.path.isfile(file_name) == False:
+        #     pretrain_file_id_dict = {
+        #         "amazon_movie": "1a-4vro-yS-trNguL7lnpzFvntHjCO3xj",
+        #         "amazon_book_2014": "1bXw1u6Yq8Tbv2rX5kz1k1K5b3F6ZlV3D",
+        #         "amazon_video": "1cYq3F2G7H8J9K0L1M2N3O4P5Q6R7S8T9",
+        #         "amazon_baby": "1dZx5Y6W7X8Y9Z0A1B2C3D4E5F6G7H8I9",
+        #         "steam": "1eA1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P",
+        #         "amazon_beauty_personal": "1fP1Q2R3S4T5U6V7W8X9Y0Z1A2B3C4D5E",
+        #         "amazon_health": "1gF6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U" 
+        #     }
+        #     download_from_gdrive("", pretrain_file_id_dict, file_name)
         
         checkpoint = torch.load(file_name, map_location = str(device))
         model.load_state_dict(checkpoint['state_dict'])

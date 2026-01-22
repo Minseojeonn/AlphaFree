@@ -3,3 +3,4 @@ models/base/evaluator/
 models/base/util/cython/
 weights/
 *.pyc
+pretrained/

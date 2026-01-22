@@ -184,6 +184,11 @@ def clear_checkpoint(checkpoint_dir):
 
     print("Checkpoint successfully removed")
 
+def evaluation_inference(model, evaluator):
+    ret, _ = evaluator.evaluate(model)
+    n_ret = {"recall": ret[1], "hit_ratio": ret[5], "precision": ret[0], "ndcg": ret[3], "mrr":ret[4], "map":ret[2]}
+    perf_str = "inference_only"+':{}'.format(n_ret)
+    print(perf_str)
 
 def evaluation(args, data, model, epoch, base_path, evaluator, name="valid"):
     # Evaluate with given evaluator
