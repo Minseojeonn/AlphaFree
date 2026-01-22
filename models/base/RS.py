@@ -55,8 +55,20 @@ class AbstractRS(nn.Module):
         self.preperation_for_saving(args, special_args)
         self.evaluators, self.eval_names = self.get_evaluators(self.data) # load the evaluators
 
-    def execute(self):
-        
+    # Function inference process using pre-trained weights
+    def inference_only(self):
+        self.model, self.start_epoch = self.restore_checkpoint(self.model, self.base_path, self.device, force=True) # restore the checkpoint
+        self.model.eval() # evaluate the best model
+
+        n_rets = {}
+        for i,evaluator in enumerate(self.evaluators[:]):
+            _, __, n_ret = evaluation(self.args, self.data, self.model, self.start_epoch, self.base_path, evaluator, self.eval_names[i])
+            n_rets[self.eval_names[i]] = n_ret
+
+        self.recommend_top_k()
+
+    # Function training process from scratch
+    def training(self):
         self.save_args() 
         perf_str = str(self.args)
         with open(self.base_path + 'stats.txt','a') as f:

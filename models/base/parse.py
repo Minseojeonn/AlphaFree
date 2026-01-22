@@ -4,6 +4,11 @@ import argparse
 def parse_args():
     parser = argparse.ArgumentParser()
 
+    # Phase Args
+    parser.add_argument('--phase', type=str, default='train',
+                        choices=['preprocessing', 'train', 'inference'],
+                        help='The phase to run the model in.')
+
     # General Args
     parser.add_argument('--model_name', type=str, default='AlphaFree',
                         help='model name.')
