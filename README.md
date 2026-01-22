@@ -128,7 +128,7 @@ python main.py --phase inference --dataset <DATASET_NAME>
 ```
 
 ### ✅ Recommendation Demo
-Inference demo using the pre-trained AlphaFree model on the movie dataset. <br>
+Recommendation demo using the pre-trained AlphaFree model on the movie dataset. <br>
 To clearly indicate that we use only the original $\texttt{MLP}$ for inference, we provide a separate model <br> 
 implementation that includes only the original $\texttt{MLP}$ (./models/AlphaFree_inference.py).  
 This class uses only the $\texttt{MLP}$ from a model trained with both $\texttt{MLP}^+$ (augmented view) and $\texttt{MLP}$ (original view). <br>
