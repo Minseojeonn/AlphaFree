@@ -11,6 +11,7 @@ import datetime
 import torch
 import json
 import time
+import os
 
 class AbstractRS(nn.Module):
     '''
@@ -57,7 +58,7 @@ class AbstractRS(nn.Module):
 
     # Function inference process using pre-trained weights
     def inference_only(self):
-        self.model, self.start_epoch = self.restore_checkpoint(self.model, self.base_path, self.device, force=True) # restore the checkpoint
+        self.model, self.start_epoch = self.restore_checkpoint_using_pretrain(self.model, self.dataset_name, self.device) # restore the checkpoint
         self.model.eval() # evaluate the best model
 
         n_rets = {}
@@ -319,6 +320,23 @@ class AbstractRS(nn.Module):
         model.load_state_dict(checkpoint['state_dict'])
         print("=> Successfully restored checkpoint (trained for {} epochs)"
             .format(checkpoint['epoch']))
+
+        return model
+    
+    def restore_checkpoint_using_pretrain(self, model, dataset, device):
+        """
+        Restore pre-trained checkpoint.
+        Download pre-trained weights using google drive download.
+        """
+        
+        file_name = './pretrained/' + dataset + '.pth.tar'
+        
+        if os.path.isfile(file_name):
+            checkpoint = torch.load(file_name, map_location = str(device))
+            model.load_state_dict(checkpoint['state_dict'])
+            print("Successfully restored pre-trained checkpoint.")
+        else:
+            raise Exception("Pre-trained checkpoint not found.")
 
         return model
     
