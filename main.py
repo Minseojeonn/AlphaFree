@@ -9,15 +9,16 @@ if __name__ == '__main__':
     fix_seeds(args.seed)
     
     # Phase preprocessing : data preprocessing (Language Representation Generation, Augmentations ..)
+    # No need to run this phase independently, it will be called in the training phase automatically
     if args.phase == 'preprocessing':
         data = AlphaFreeData(args)
     
-    # Phase inference : inference using pre-trained model 
+    # Phase inference : inference using pre-trained model.
     elif args.phase == 'inference':
         RS = AlphaFreeRS(args, special_args)
         RS.inference_only()
         
-    # Phase train : training model from scratch
+    # Phase train : training model from scratch.
     elif args.phase == 'train':
         RS = AlphaFreeRS(args, special_args)
         RS.execute()
