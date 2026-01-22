@@ -294,3 +294,13 @@ def csr_to_torch_sparse(csr_mat):
     values = torch.from_numpy(csr_mat.data).float()
     shape = torch.Size(csr_mat.shape)
     return torch.sparse.FloatTensor(indices, values, shape)
+
+def fix_seeds(seed):
+	random.seed(seed)
+	os.environ['PYTHONHASHSEED'] = str(seed) 
+	np.random.seed(seed)
+	torch.manual_seed(seed)
+	torch.cuda.manual_seed(seed)
+	torch.cuda.manual_seed_all(seed) # if you are using multi-GPU.
+	torch.backends.cudnn.benchmark = False
+	torch.backends.cudnn.deterministic = True

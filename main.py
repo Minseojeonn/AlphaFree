@@ -1,6 +1,6 @@
 from models.base.RS import AlphaFree_RS
 from parse import parse_args
-from utils import fix_seeds
+from models.base.utils import fix_seeds
 
 if __name__ == '__main__':
     args, special_args = parse_args()
