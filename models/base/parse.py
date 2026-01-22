@@ -60,7 +60,7 @@ def parse_args():
     
     parser.add_argument('--tau_r', type=float, default=0.1,
                     help='tau_r')
-    parser.add_argument('--lm_model', type=str, default='v3',
+    parser.add_argument('--lm_model', type=str, default='llama',
                 choices=['v3', 'llama'],
                 help='The base language model')
     parser.add_argument('--tau_a', type=float, default=0,

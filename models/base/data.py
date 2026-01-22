@@ -225,6 +225,7 @@ class AlphaFreeData(AbstractData):
         if os.path.isfile(loading_path + embedding_path_dict[self.lm_model]) == False:
             if args.dataset == "amazon_book_2014" or args.dataset == "amazon_movie":
                 print("Please refer to the README file for this dataset.")
+                raise Exception("Not supported dataset.")
             print("No language representations found, start generating ...")
             self.generate_language_representations(args)
         

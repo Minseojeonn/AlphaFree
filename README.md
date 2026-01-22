@@ -51,31 +51,31 @@ You can run the preprocessing phase of `AlphaFree` by typing the following comma
 
 ##### Preprocessing `Movie` dataset
 ```bash
-python main.py --phase preprocessing --dataset amazon_movie --K_c 5
+python main.py --phase preprocessing --dataset amazon_movie --K_c 5 --lm_model v3
 ```
 ##### Preprocessing `Book` dataset
 ```bash
-python main.py --phase preprocessing --dataset amazon_book_2014 --K_c 5
+python main.py --phase preprocessing --dataset amazon_book_2014 --K_c 5 --lm_model v3
 ```
 ##### Preprocessing `Video` dataset
 ```bash
-python main.py --phase preprocessing --dataset amazon_video --K_c 10
+python main.py --phase preprocessing --dataset amazon_video --K_c 10 --lm_model llama
 ```
 ##### Preprocessing `Baby` dataset
 ```bash
-python main.py --phase preprocessing --dataset amazon_baby --K_c 10
+python main.py --phase preprocessing --dataset amazon_baby --K_c 10 --lm_model llama
 ```
 ##### Preprocessing `Steam` dataset
 ```bash
-python main.py --phase preprocessing --dataset steam --K_c 3
+python main.py --phase preprocessing --dataset steam --K_c 3 --lm_model llama
 ```
 ##### Preprocessing `Beauty` dataset
 ```bash
-python main.py --phase preprocessing --dataset amazon_beauty --K_c 10
+python main.py --phase preprocessing --dataset amazon_beauty --K_c 10 --lm_model llama
 ```
 ##### Preprocessing `Health` dataset
 ```bash
-python main.py --phase preprocessing --dataset amazon_health --K_c 5
+python main.py --phase preprocessing --dataset amazon_health --K_c 5 --lm_model llama
 ```
 
 
@@ -125,7 +125,7 @@ You can evaluate AlphaFree using the pre-trained weights.<br>
 The pre-trained weights will be downloaded automatically from Google Drive. <br>
 **Note :** You must download the dataset(s) first.
 ```bash
-python main.py --phase inference --dataset <DATASET_NAME>
+python main.py --phase inference --dataset <DATASET_NAME> --lm_model v3
 ```
 
 ### ✅ Recommendation Demo
