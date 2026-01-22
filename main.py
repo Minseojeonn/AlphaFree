@@ -1,5 +1,5 @@
 from models.base.RS import AlphaFreeRS
-from AlphaFree.models.base.parse import parse_args
+from models.base.parse import parse_args
 from models.base.utils import fix_seeds
 
 if __name__ == '__main__':
@@ -19,7 +19,7 @@ if __name__ == '__main__':
     # Phase train : training model from scratch
     elif args.phase == 'train':
         RS = AlphaFreeRS(args, special_args)
-        RS.training()
+        RS.execute()
         
     # Something wrong, please check phase
     else:

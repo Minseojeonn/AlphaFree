@@ -69,7 +69,7 @@ class AbstractRS(nn.Module):
         self.recommend_top_k()
 
     # Function training process from scratch
-    def training(self):
+    def execute(self):
         self.save_args() 
         perf_str = str(self.args)
         with open(self.base_path + 'stats.txt','a') as f:
@@ -336,7 +336,7 @@ class AbstractRS(nn.Module):
             model.load_state_dict(checkpoint['state_dict'])
             print("Successfully restored pre-trained checkpoint.")
         else:
-            raise Exception("Pre-trained checkpoint not found.")
+            raise Exception("Pre-trained checkpoint not found. please download it using shell script provided in the ./pretrained.")
 
         return model
     
