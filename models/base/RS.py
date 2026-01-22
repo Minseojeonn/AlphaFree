@@ -332,17 +332,21 @@ class AbstractRS(nn.Module):
         
         file_name = './pretrained/' + dataset + '.pth.tar'
         print("load {}", file_name)
-        # if os.path.isfile(file_name) == False:
-        #     pretrain_file_id_dict = {
-        #         "amazon_movie": "1a-4vro-yS-trNguL7lnpzFvntHjCO3xj",
-        #         "amazon_book_2014": "1bXw1u6Yq8Tbv2rX5kz1k1K5b3F6ZlV3D",
-        #         "amazon_video": "1cYq3F2G7H8J9K0L1M2N3O4P5Q6R7S8T9",
-        #         "amazon_baby": "1dZx5Y6W7X8Y9Z0A1B2C3D4E5F6G7H8I9",
-        #         "steam": "1eA1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P",
-        #         "amazon_beauty_personal": "1fP1Q2R3S4T5U6V7W8X9Y0Z1A2B3C4D5E",
-        #         "amazon_health": "1gF6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U" 
-        #     }
-        #     download_from_gdrive("", pretrain_file_id_dict, file_name)
+        
+        if os.path.isdir(f'./data/{dataset}') == False:
+            raise Exception("Dataset not found. Please download the dataset first")
+            
+        if os.path.isfile(file_name) == False:
+            pretrain_file_id_dict = {
+                "amazon_movie": "1FnXlxiZ2KkI1nLm0ccqXtNV0dKddj62L",
+                "amazon_book_2014": "1IM20vrFxmnI66j7eiRFCxlNtzhN4pkUI",
+                "amazon_video": "1dAbq-vfolKsQMckrS86czIJIBJMXBmHg",
+                "amazon_baby": "1av5OBnmzMDWQGIM3DjsSfPfKioW2EqtT",
+                "steam": "1dgPnT9qiJu2_de51kaYkbvvP4T9VsaPL",
+                "amazon_beauty_personal": "1rSuWx7fD0l5EcjZD55E0FwCd3GHvr5R8",
+                "amazon_health": "1RtO_YFFAxlkbKuFWGAoz55q4mXc6bftu" 
+            }
+            download_from_gdrive(pretrain_file_id_dict[dataset], file_name)
         
         checkpoint = torch.load(file_name, map_location = str(device))
         model.load_state_dict(checkpoint['state_dict'])
