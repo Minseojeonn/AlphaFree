@@ -125,7 +125,7 @@ You can evaluate AlphaFree using the pre-trained weights.<br>
 The pre-trained weights will be downloaded automatically from Google Drive. <br>
 **Note :** You must download the dataset(s) first.
 ```bash
-python main.py --phase inference --dataset <DATASET_NAME> --lm_model v3
+python main.py --phase inference --dataset <DATASET_NAME> --lm_model <LM_NAME>
 ```
 
 ### ✅ Recommendation Demo
