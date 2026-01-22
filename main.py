@@ -1,5 +1,5 @@
 from models.base.RS import AlphaFreeRS
-from parse import parse_args
+from AlphaFree.models.base.parse import parse_args
 from models.base.utils import fix_seeds
 
 if __name__ == '__main__':
