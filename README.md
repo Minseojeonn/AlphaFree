@@ -47,6 +47,7 @@ chmod +x download.sh
 ### 1️⃣ Preprocessing Phase
 You can run the preprocessing phase of `AlphaFree` by typing the following command in your terminal. In this phase, you can generate Language Representations (LRs) and perform interaction/representation augmentation. <br>
 **Note :** LR generation is not supported for the amazon_book_2014 and amazon_movie datasets, since we reuse the LRs provided by [AlphaRec repo](https://github.com/LehengTHU/AlphaRec) for both datasets.
+**Note :** We also provide pre-generated LRs, so you don’t need to spend time generating them.
 
 ##### Preprocessing `Movie` dataset
 ```bash
