@@ -41,60 +41,107 @@ chmod +x download.sh
 ```
 
 ## 🚀 Usage
-### Train our model from scratch
-You can train `AlphaFree` with the best hyperparameters for each dataset by typing the following command in your terminal:
 
-#### Train AlphaFree in the `Movie` dataset
+`AlphaFree` consists of three phases: “Preprocessing,” “Training,” and “Inference.”
+
+### 1️⃣ Preprocessing Phase
+You can run the preprocessing phase of `AlphaFree` by typing the following command in your terminal. In this phase, you can generate Language Representations (LRs) and perform interaction/representation augmentation. <br>
+**Note :** LR generation is not supported for the amazon_book_2014 and amazon_movie datasets, since we reuse the LRs provided by [AlphaRec repo](https://github.com/LehengTHU/AlphaRec) for both datasets.
+
+##### Preprocessing `Movie` dataset
 ```bash
-python main.py --model_name AlphaFree --dataset amazon_movie \
+python main.py --phase preprocessing --dataset amazon_movie --K_c 5
+```
+##### Preprocessing `Book` dataset
+```bash
+python main.py --phase preprocessing --dataset amazon_book_2014 --K_c 5
+```
+##### Preprocessing `Video` dataset
+```bash
+python main.py --phase preprocessing --dataset amazon_video --K_c 10
+```
+##### Preprocessing `Baby` dataset
+```bash
+python main.py --phase preprocessing --dataset amazon_baby --K_c 10
+```
+##### Preprocessing `Steam` dataset
+```bash
+python main.py --phase preprocessing --dataset steam --K_c 3
+```
+##### Preprocessing `Beauty` dataset
+```bash
+python main.py --phase preprocessing --dataset amazon_beauty --K_c 10
+```
+##### Preprocessing `Health` dataset
+```bash
+python main.py --phase preprocessing --dataset amazon_health --K_c 5
+```
+
+
+
+### 2️⃣ Training Phase
+You can train `AlphaFree` from scratch with the validated hyperparameters for each dataset by typing the following command in your terminal:
+
+##### Train AlphaFree in the `Movie` dataset
+```bash
+python main.py --phase train --dataset amazon_movie \
     --cuda 0 --K_c 5 --lm_model v3 --lambda_align 0.2 --tau_a 0.2 --tau_r 0.15  
 ```
-#### Train AlphaFree in the `Book` dataset
+##### Train AlphaFree in the `Book` dataset
 ```bash
-python main.py --model_name AlphaFree --dataset amazon_book_2014 \
+python main.py --phase train --dataset amazon_book_2014 \
     --cuda 0 --K_c 5 --lm_model v3 --lambda_align 0.2 --tau_a 0.1 --tau_r 0.15
 ```
-#### Train AlphaFree in the `Video` dataset
+##### Train AlphaFree in the `Video` dataset
 ```bash
-python main.py --model_name AlphaFree --dataset amazon_video \
+python main.py --phase train --dataset amazon_video \
     --cuda 0 --K_c 10 --lm_model llama --lambda_align 0.05 --tau_a 0.01 --tau_r 0.2
 ```
-#### Train AlphaFree in the `Baby` dataset
+##### Train AlphaFree in the `Baby` dataset
 ```bash
-python main.py --model_name AlphaFree --dataset amazon_baby \
+python main.py --phase train --dataset amazon_baby \
     --cuda 0 --K_c 10 --lm_model llama --lambda_align 0.01 --tau_a 0.2 --tau_r 0.2
 ```
-#### Train AlphaFree in the `Steam` dataset
+##### Train AlphaFree in the `Steam` dataset
 ```bash
-python main.py --model_name AlphaFree --dataset steam \ 
+python main.py --phase train --dataset steam \ 
     --cuda 0 --K_c 3 --lm_model llama --lambda_align 0.01 --tau_a 0.2 --tau_r 0.2
 ```
-#### Train AlphaFree in the `Beauty` dataset
+##### Train AlphaFree in the `Beauty` dataset
 ```bash
-python main.py --model_name AlphaFree --dataset amazon_beauty_personal \
+python main.py --phase train --dataset amazon_beauty_personal \
     --cuda 0 --K_c 10 --lm_model llama --lambda_align 0.01 --tau_a 0.1 --tau_r 0.2
 ```
-#### Train AlphaFree in the `Health` dataset
+##### Train AlphaFree in the `Health` dataset
 ```bash
-python main.py --model_name AlphaFree --dataset amazon_health \
+python main.py --phase train --dataset amazon_health \
     --cuda 0 --K_c 5 --lm_model llama --lambda_align 0.01 --tau_a 0.2 --tau_r 0.15
 ```
 
-### Inference Demo
+
+### 3️⃣ Inference Phase
+You can evaluate AlphaFree using the pre-trained weights.<br>
+The pre-trained weights will be downloaded automatically from Google Drive. <br>
+**Note :** You must download the dataset(s) first.
+```bash
+python main.py --phase inference --dataset <DATASET_NAME>
+```
+
+### ✅ Recommendation Demo
 Inference demo using the pre-trained AlphaFree model on the movie dataset. <br>
 To clearly indicate that we use only the original $\texttt{MLP}$ for inference, we provide a separate model <br> 
 implementation that includes only the original $\texttt{MLP}$ (./models/AlphaFree_inference.py).  
 This class uses only the $\texttt{MLP}$ from a model trained with both $\texttt{MLP}^+$ (augmented view) and $\texttt{MLP}$ (original view). <br>
 **Note :** Before running the inference demo, **download the Amazon Movie dataset first.**
 ```bash
-python inference.py 
+python RecDemo.py 
 ```
 ## 📈 Result of Pre-trained `AlphaFree`
 
 ### Trainlog
 You can find the training logs of our model in the ./log folder.<br>
 The test performance of the pre-trained AlphaFree on each dataset (based on ./log) is as follows: <br>
-(You can also check the recommendation performance with the pre-trained parameters we have provided.)
+(You can also check the recommendation performance with the pre-trained parameters (3️⃣ Phase : Inference) we have provided.)
 | **AlphaFree** | **Movie**  |**Book**   | **Video**  | **Baby**   | **Steam**  | **Beauty** | **Health** |
 |-------------|--------|--------|--------|--------|--------|--------|--------|
 | **Recall@20** | 0.1267 | 0.1025 | 0.1117 | 0.0412 | 0.2400 | 0.0371 | 0.0333 |

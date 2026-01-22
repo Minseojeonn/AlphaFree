@@ -4,7 +4,7 @@ import torch.nn as nn
 import numpy as np
 import torch
 
-class AlphaFreeInference(torch.nn.Module):
+class AlphaFreeRecDemo(torch.nn.Module):
     """
         Demo class for inference with AlphaFree model
         This class only uses the original view for inference.
