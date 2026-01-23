@@ -40,7 +40,10 @@ chmod +x download.sh
 
 ## 🚀 Usage
 
-`AlphaFree` consists of three phases: “Preprocessing,” “Training,” and “Inference.”
+`AlphaFree` consists of three phases: 
+* 1️⃣ Inference : Evaluate AlphaFree using the the pre-trained weights.
+* 2️⃣ Training : Train AlphaFree from scratch.
+* 3️⃣ Preprocessing : Generate Language Representations (LRs) and perform interaction/representation augmentation. (Pre-generated outputs are also included when you download the dataset.)
 
 ### 1️⃣ Inference Phase
 You can evaluate AlphaFree using the pre-trained weights.<br>
@@ -70,10 +73,10 @@ Recommendation demo using the pre-trained AlphaFree model on the movie dataset. 
 To clearly indicate that we use only the original $\texttt{MLP}$ for inference, we provide a separate model <br> 
 implementation that includes only the original $\texttt{MLP}$ (./models/AlphaFree_inference.py).  
 This class uses only the $\texttt{MLP}$ from a model trained with both $\texttt{MLP}^+$ (augmented view) and $\texttt{MLP}$ (original view). <br>
-**Note :** Before running the inference demo, **download the Amazon Movie dataset first.**
 ```bash
 python RecDemo.py 
 ```
+**Note :** Before running the inference demo, **download the Amazon Movie dataset first.**
 ## 📈 Result of Pre-trained `AlphaFree`
 
 ### Trainlog
