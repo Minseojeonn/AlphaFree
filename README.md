@@ -59,6 +59,7 @@ You can train `AlphaFree` from scratch with the validated hyperparameters for ea
 
 ```bash
 python main.py --phase train --dataset <DATASET_NAME> 
+# Datasets : [amazon_book_2014, amazon_movie, amazon_video, amazon_baby, steam, amazon_beauty_personal, amazon_health]
 ```
 **Note:** You can modify the config file for each dataset to train with different hyperparameters.
 
@@ -66,6 +67,7 @@ python main.py --phase train --dataset <DATASET_NAME>
 You can run the preprocessing phase of `AlphaFree` by typing the following command in your terminal. In this phase, you can generate Language Representations (LRs) and perform interaction/representation augmentation. 
 ```bash
 python main.py --phase preprocessing --dataset <DATASET_NAME>
+# Datasets : [amazon_book_2014, amazon_movie, amazon_video, amazon_baby, steam, amazon_beauty_personal, amazon_health]
 ```
 **Note1:** LR generation is not supported for the amazon_book_2014 and amazon_movie datasets, since we reuse the LRs provided by [AlphaRec repo](https://github.com/LehengTHU/AlphaRec) for both datasets. <br> 
 **Note2:** We also provide pre-generated LRs and augmented interactions/representations so you don’t need to spend time generating them.
