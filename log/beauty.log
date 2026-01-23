@@ -1,5 +1,5 @@
 Evaluate model with cpp
-Namespace(model_name='AlphaFree', dataset='amazon_beauty_personal', cuda=0, test_only=False, clear_checkpoints=True, saveID='Saved', seed=101, max_epoch=200, verbose=5, patience=20, batch_size=4096, lr=0.0005, hidden_size=64, weight_decay=1e-06, Ks=20, neg_sample=256, infonce=1, data_path='./data/', num_workers=8, regs=1e-05, max2keep=1, tau_r=0.2, lm_model='llama', tau_a=0.1, K_c=10, lambda_align=0.01)
+Namespace(model_name='AlphaFree', dataset='amazon_beauty_personal', cuda=0, test_only=False, clear_checkpoints=True, saveID='Saved', seed=101, max_epoch=500, verbose=5, patience=20, batch_size=4096, lr=0.0005, hidden_size=64, weight_decay=1e-06, Ks=20, neg_sample=256, infonce=1, data_path='./data/', num_workers=8, regs=1e-05, max2keep=1, tau_r=0.2, lm_model='llama', tau_a=0.1, K_c=10, lambda_align=0.01)
 n_users:  729576
 n_items:  207649
 load finish

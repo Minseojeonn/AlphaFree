@@ -1,19 +1,20 @@
 import argparse
+import os
+import yaml
 
 
-def parse_args():
+def build_parser():
     parser = argparse.ArgumentParser()
 
     # Phase Args
     parser.add_argument('--phase', type=str, default='train',
                         choices=['preprocessing', 'train', 'inference'],
                         help='The phase to run the model in.')
-
+    parser.add_argument('--dataset', type=str, default='amazon_movie',
+                        help='Dataset name.')
     # General Args
     parser.add_argument('--model_name', type=str, default='AlphaFree',
-                        help='model name.')
-    parser.add_argument('--dataset', nargs='?', default='amazon_movie',
-                        help='yc, ks, rr')
+                        help='model name.')    
     parser.add_argument('--cuda', type=int, default=0,
                         help='cuda device.')
     parser.add_argument('--test_only', action="store_true",
@@ -40,7 +41,6 @@ def parse_args():
                         help='Number of hidden factors, i.e., embedding size.')
     parser.add_argument('--weight_decay', type=float, default=1e-6,
                         help='weight decay for optimizer.')
-    args, _ = parser.parse_known_args()
 
     
     parser.add_argument('--Ks', type = int, default= 20,
@@ -56,7 +56,6 @@ def parse_args():
                         help='Regularization.')
     parser.add_argument('--max2keep', type=int, default=1,
                         help='max checkpoints to keep')
-    args, _ = parser.parse_known_args()
     
     parser.add_argument('--tau_r', type=float, default=0.1,
                     help='tau_r')
@@ -70,7 +69,43 @@ def parse_args():
     parser.add_argument('--lambda_align', type=float, default=0.07,
                         help='align cl loss temperature')
 
-    args_full, _ = parser.parse_known_args()
-    special_args = list(set(vars(args_full).keys()) - set(vars(args).keys()))
-    special_args.sort()
-    return args_full, special_args
+    return parser
+
+def load_dataset_config(config_dir: str, dataset: str):
+    path = os.path.join(config_dir, f"{dataset}.yaml")
+    if not os.path.exists(path):
+        return {}, path
+    with open(path, "r", encoding="utf-8") as f:
+        cfg = yaml.safe_load(f) or {}
+    if not isinstance(cfg, dict):
+        raise ValueError(f"Config must be a dict at top-level: {path}")
+    return cfg, path
+
+
+def parse_args():
+    # 1) minimal parse to know dataset/config_dir
+    mini = argparse.ArgumentParser(add_help=False)
+    mini.add_argument('--dataset', type=str, default='amazon_movie')
+    mini.add_argument('--config_dir', type=str, default='./configs')
+    mini_args, _ = mini.parse_known_args()
+
+    # 2) load config by dataset
+    cfg, cfg_path = load_dataset_config(mini_args.config_dir, mini_args.dataset)
+
+    # 3) build full parser and set defaults from config
+    parser = build_parser()
+    parser.add_argument('--config_dir', type=str, default=mini_args.config_dir)
+    parser.add_argument('--config_path', type=str, default=cfg_path, help='Loaded config path (auto).')
+
+    # config에 있는 key만 parser에 존재하는 옵션이면 반영
+    valid_keys = {a.dest for a in parser._actions}
+    filtered = {k: v for k, v in cfg.items() if k in valid_keys}
+    parser.set_defaults(**filtered)
+    parser.set_defaults(dataset=mini_args.dataset)
+
+    # 4) final parse (CLI가 config 덮어씀)
+    args = parser.parse_args()
+
+    # special args(옵션 목록) 필요하면 그대로 유지 가능
+    special_args = sorted(list(filtered.keys()))
+    return args, special_args

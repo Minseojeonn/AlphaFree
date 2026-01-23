@@ -1,0 +1,5 @@
+K_c: 10
+lambda_align: 0.05
+tau_a: 0.01
+tau_r: 0.2
+lm_model: llama
