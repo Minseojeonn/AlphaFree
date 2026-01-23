@@ -51,6 +51,7 @@ The pre-trained weights will be downloaded automatically from Google Drive. <br>
 **Note :** You must download the dataset(s) first. 
 ```bash
 python main.py --phase inference --dataset <DATASET_NAME> 
+# Datasets : [amazon_book_2014, amazon_movie, amazon_video, amazon_baby, steam, amazon_beauty_personal, amazon_health]
 ```
 
 ### 2️⃣ Training Phase
