@@ -32,7 +32,7 @@ conda install -c conda-forge libstdcxx-ng=13.1.0
 
 ## 📚 Datasets
 The statistics of datasets used in the paper are summarized as follows. 
-| Dataset | Movie | Book | Video | Baby | Steam | Beauty | Health |
+| Datasets | Movie | Book | Video | Baby | Steam | Beauty | Health |
 |:--|--:|--:|--:|--:|--:|--:|--:|
 | **#Users** | 26,073 | 71,306 | 94,762 | 150,777 | 334,730 | 729,576 | 796,054 |
 | **#Items** | 12,464 | 40,523 | 25,612 | 36,013 | 15,068 | 207,649 | 184,346 |
@@ -97,8 +97,15 @@ python main.py --phase preprocessing --dataset $DATASET_NAME
 ```
 
 **Note1:** The LR generation is not supported for the amazon_book_2014 and amazon_movie datasets, since we reuse the LRs provided by [AlphaRec](https://github.com/LehengTHU/AlphaRec) for both datasets. <br> 
-**Note2:** For other datasets, we used LLaMA-3-8B. If you would like to use a different LM, please modify `data.py` (see 280 line) accordingly.
+**Note2:** For other datasets, we used LLaMA-3-8B. If you would like to use a different LM, please modify `data.py` (see 280 line) accordingly. <br>
 **Note3:** If you would like to apply `AlphaFree` to your own dataset, please prepare the raw data according to the required format and run the preprocessing phase first.
+
+The dimensionality of the generated LRs varies depending on the language model. The dimension $d_{LR}$ used for each dataset is as follows.
+| Datasets | **Movie**  |**Book**   | **Video**  | **Baby**   | **Steam**  | **Beauty** | **Health** |
+|:-------------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|
+| $d_{LR}$      | 3072 | 3072 | 4096 | 4096 |4096 |4096 | 4096 |
+
+
 
 ### ✅ Recommendation demo
 Recommendation demo using the pre-trained AlphaFree model on the video dataset. <br>
@@ -111,20 +118,9 @@ python demo.py
 **Note :** Before running the inference demo, **download the Amazon video dataset first.**
 
 
-## 📈 Result of Pre-trained `AlphaFree`
+## 📈 Experimental Results of `AlphaFree`
 
-### Trainlog
-You can find the training logs of our model in the ./log folder.<br>
-The test performance of the pre-trained AlphaFree on each dataset (based on ./log) is as follows: <br>
-(You can also check the recommendation performance with the pre-trained parameters (1️⃣ Phase : Inference) we have provided.)
-| **AlphaFree** | **Movie**  |**Book**   | **Video**  | **Baby**   | **Steam**  | **Beauty** | **Health** |
-|-------------|--------|--------|--------|--------|--------|--------|--------|
-| **Recall@20** | 0.1267 | 0.1025 | 0.1117 | 0.0412 | 0.2400 | 0.0371 | 0.0333 |
-| **NDCG@20** | 0.1193 | 0.0869 | 0.0619 | 0.0221 | 0.1940 | 0.0205 | 0.0189 |
-
-
-
-### Performance Table
+### Performance for top-k item recommendation
 The reported results in the paper are as follows:
 
 | **Recall@20** | **Movie**  |**Book**   | **Video**  | **Baby**   | **Steam**  | **Beauty** | **Health** |
@@ -151,24 +147,33 @@ The reported results in the paper are as follows:
 |  **% inc. over best LR** | **4.65%** | **3.86%** | **1.65%** | **5.71%** | **2.89%** | **-** | **-** |
 | **% inc. over best non-LR**  | **37.90%** | **24.78%** | **23.07%** | **9.26%** | **16.49%** | **42.86%** | **8.24%** |
 
-
 * o.o.t. : Out of Time
 * o.o.m. : Out of Memory (VRAM)
 
+### Logs in training
+You can find the training logs of our model in the `./log` directory. The test performance of the pre-trained AlphaFree that produced these logs (based on `./log`) is summarized below.  
+| **AlphaFree** | **Movie**  |**Book**   | **Video**  | **Baby**   | **Steam**  | **Beauty** | **Health** |
+|-------------|--------|--------|--------|--------|--------|--------|--------|
+| **Recall@20** | 0.1267 | 0.1025 | 0.1117 | 0.0412 | 0.2400 | 0.0371 | 0.0333 |
+| **NDCG@20** | 0.1193 | 0.0869 | 0.0619 | 0.0221 | 0.1940 | 0.0205 | 0.0189 |
+
+You can also verify the recommendation performance using the provided pre-trained weights (see **Inference phase**). Note that due to the non-deterministic behavior of PyTorch, the reported performance may vary slightly within a small margin.
+
+
 ### Validated hyperparameters of AlphaFree
+We report the validated hyperparameters for each dataset, selected based on validation performance measured by Recall@20, in the table below.
+
 | **Hyperparam** | **Movie**  |**Book**   | **Video**  | **Baby**   | **Steam**  | **Beauty** | **Health** |
 |:-------------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|
 | $K_c$      | 5 | 5 | 10 | 10 | 3 | 10 | 5 |
 | $\lambda_{\texttt{align}}$    | 0.2 | 0.2 | 0.05 | 0.01 | 0.01 | 0.01 | 0.01 |
 | $\tau_a$    | 0.2 | 0.1 | 0.01 | 0.2 | 0.2 | 0.1 | 0.2 |
 | $\tau_r$     | 0.15 | 0.15 | 0.2 | 0.2 | 0.2 | 0.2 | 0.15 |
-| $d_{LR}$      | 3072 | 3072 | 4096 | 4096 |4096 |4096 | 4096 |
 
-**Description of each hyperparameter**
+#### Description of each hyperparameter
 * $K_c$ : The number of similar items (`--K_c`).
 * $\lambda_{\texttt{align}}$ : The alignment loss weight (`--lambda_align`).
 * $\tau_a$ : The alignment temperature (`--tau_a`).
 * $\tau_r$ : The recommendation temperature (`--tau_r`).
-* $d_{LR}$ : The dimension of Language Representations (Depends on language models).
 
 
