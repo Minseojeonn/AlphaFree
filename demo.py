@@ -11,7 +11,7 @@ if __name__ == '__main__':
     weight_file_path = "./weights/inference_demo/weights.pth.tar"
     if not os.path.exists(weight_file_path):
         os.makedirs("./weights/inference_demo", exist_ok=True)
-        file_id = "1a-4vro-yS-trNguL7lnpzFvntHjCO3xj"
+        file_id = "1dAbq-vfolKsQMckrS86czIJIBJMXBmHg"
         url = f"https://drive.google.com/uc?id={file_id}"
         gdown.download(url, weight_file_path, quiet=False)
     
