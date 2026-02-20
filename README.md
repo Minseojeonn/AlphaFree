@@ -1,5 +1,10 @@
 # AlphaFree
-This is the official code for **AlphaFree** (Recommendation Free from Users, IDs, and GNNs),<br> accepted to ACM The Web Conf (WWW) 2026 Full Research Paper
+This repository provides the official implementation of AlphaFree, which has been accepted to ACM The Web Conference 2026. Detailed information is provided as follows.
+* **AlphaFree: Recommendation Free from Users, IDs, and GNNs** </br>
+Minseo Jeon, Junwoo Jung, Daewon Gwak, and Jinhong Jung</br>
+ACM Web Conference 2026 (WWW '26)
+
+
 ![overview](./assets/overview.png)
 
 ## ⚙️ Prerequisites
@@ -30,7 +35,7 @@ The statistics of datasets used in AlphaFree are summarized as follows.
 | **#Items** | 12,464 | 40,523 | 25,612 | 36,013 | 15,068 | 207,649 | 184,346 |
 | **#Inter.** | 875,906 | 2,206,865 | 814,586 | 1,241,083 | 4,216,781 | 6,624,441 | 7,176,552 |
 
-### ⬇️ Dataset Downloads
+### ⬇️ Dataset downloads
 You can download the dataset using the bash script at `./data/download.sh`
 ```bash
 cd ./data
@@ -45,7 +50,7 @@ chmod +x download.sh
 * 2️⃣ Training : Train AlphaFree from scratch.
 * 3️⃣ Preprocessing : Generate Language Representations (LRs) and perform interaction/representation augmentation. (Pre-generated outputs are also included when you download the dataset.)
 
-### 1️⃣ Inference Phase
+### 1️⃣ Inference phase
 You can evaluate AlphaFree using the pre-trained weights.<br>
 The pre-trained weights will be downloaded automatically from Google Drive. <br>
 **Note :** You must download the dataset(s) first. 
@@ -54,7 +59,7 @@ python main.py --phase inference --dataset <DATASET_NAME>
 # Datasets : [amazon_book_2014, amazon_movie, amazon_video, amazon_baby, steam, amazon_beauty_personal, amazon_health]
 ```
 
-### 2️⃣ Training Phase
+### 2️⃣ Training phase
 You can train `AlphaFree` from scratch with the validated hyperparameters for each dataset by typing the following command in your terminal:
 
 ```bash
@@ -63,7 +68,7 @@ python main.py --phase train --dataset <DATASET_NAME>
 ```
 **Note:** You can modify the config file for each dataset to train with different hyperparameters.
 
-### 3️⃣ Preprocessing Phase
+### 3️⃣ Preprocessing phase
 You can run the preprocessing phase of `AlphaFree` by typing the following command in your terminal. In this phase, you can generate Language Representations (LRs) and perform interaction/representation augmentation. 
 ```bash
 python main.py --phase preprocessing --dataset <DATASET_NAME>
@@ -71,6 +76,7 @@ python main.py --phase preprocessing --dataset <DATASET_NAME>
 ```
 **Note1:** LR generation is not supported for the amazon_book_2014 and amazon_movie datasets, since we reuse the LRs provided by [AlphaRec repo](https://github.com/LehengTHU/AlphaRec) for both datasets. <br> 
 **Note2:** We also provide pre-generated LRs and augmented interactions/representations so you don’t need to spend time generating them.
+
 ### ✅ Recommendation Demo
 Recommendation demo using the pre-trained AlphaFree model on the movie dataset. <br>
 To clearly indicate that we use only the original $\texttt{MLP}$ for inference, we provide a separate model <br> 
