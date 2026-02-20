@@ -1,33 +1,37 @@
 # AlphaFree
-This repository provides the official implementation of **AlphaFree**, which has been accepted to ACM The Web Conference 2026. Detailed information is provided as follows.
+This repository provides the official implementation of **AlphaFree**, which has been accepted to ACM The Web Conference 2026. 
 * **AlphaFree: Recommendation Free from Users, IDs, and GNNs** </br>
 Minseo Jeon, Junwoo Jung, Daewon Gwak, and Jinhong Jung</br>
 ACM Web Conference 2026 (WWW '26)
 
-![overview](./assets/overview.png)
-
 ## ⚙️ Prerequisites
-You can install the required packages with a conda environment by typing the following command in your terminal:
+You should install the required packages with a conda environment by typing the following command in your terminal:
 ```bash
 conda create -n alphafree python=3.9
 conda activate alphafree
-# We conducted our experiments using an RTX 4090 (24GB VRAM) under PyTorch 1.13 with CUDA 11.7.
+
 # Install with appropriate pytorch-cuda version depending on your GPU/driver.
 pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu117
 pip install -r requirements.txt
 ```
-Before using the recommendation, run the following command to install the evaluator:
+
+The experiments were conducted on a machine equipped with an RTX 4090 GPU (24GB VRAM), running PyTorch 1.13 and CUDA 11.7.
+
+Before running the code, you need to compile the evaluator module written in C++ and wrap it for use in Python. 
+To do so, execute the following command.
 ```bash
 pushd models/base
 python setup.py build_ext --inplace
 popd
+```
 
-# If any error occurs, run the following command:
+If you encounter an error that the version of libstdcxx-ng mismatches, run the following to fix it, then try again.
+```bash
 conda install -c conda-forge libstdcxx-ng=13.1.0
 ```
 
 ## 📚 Datasets
-The statistics of datasets used in AlphaFree are summarized as follows. 
+The statistics of datasets used in the paper are summarized as follows. 
 | Dataset | Movie | Book | Video | Baby | Steam | Beauty | Health |
 |:--|--:|--:|--:|--:|--:|--:|--:|
 | **#Users** | 26,073 | 71,306 | 94,762 | 150,777 | 334,730 | 729,576 | 796,054 |
@@ -35,28 +39,45 @@ The statistics of datasets used in AlphaFree are summarized as follows.
 | **#Inter.** | 875,906 | 2,206,865 | 814,586 | 1,241,083 | 4,216,781 | 6,624,441 | 7,176,552 |
 
 ### ⬇️ Dataset downloads
-You can download the dataset using the bash script at `./data/download.sh`
+The dataset names used in the paper correspond to the following $DATASET_NAME arguments in the download script:
+* Movie → amazon_movie
+* Book → amazon_book_2014
+* Video → amazon_video
+* Baby → amazon_baby
+* Steam → steam
+* Beauty → amazon_beauty_personal
+* Health → amazon_health
+
+You can download each dataset using:
 ```bash
 cd ./data
 chmod +x download.sh  
-./download.sh --dataset <DATASET_NAME>
-# Datasets : [amazon_book_2014, amazon_movie, amazon_video, amazon_baby, steam, amazon_beauty_personal, amazon_health]
+./download.sh --dataset $DATASET_NAME
 ```
 
-## 🚀 Usage
+For example:
+```
+./download.sh --dataset amazon_movie
+```
 
-`AlphaFree` consists of three phases: 
-* 1️⃣ Inference : Evaluate AlphaFree using the the pre-trained weights.
-* 2️⃣ Training : Train AlphaFree from scratch.
-* 3️⃣ Preprocessing : Generate Language Representations (LRs) and perform interaction/representation augmentation. (Pre-generated outputs are also included when you download the dataset.)
 
-### 1️⃣ Inference phase
+## 🚀 Usage of AlphaFree
+
+![overview](./assets/overview.png)
+
+`AlphaFree` consists of three phases: Preprocessing, Training, and Inference.
+* In the preprocessing phase, language representations (LRs) are generated from item titles and used to construct augmented interaction and representation views. 
+* In the training phase, `AlphaFree` learns item embeddings via contrastive learning with original and augmented views. 
+* In the inference phase, only the original-view encoder is used to produce embeddings for recommendation without additional augmentation or similarity computation.
+
+In this repository, we assume that the inputs for each phase are already downloaded. For practical convenience, we introduce the stages in the order of computational cost:
+> Inference → Training → Preprocessing
+
+### Inference phase
 You can evaluate AlphaFree using the pre-trained weights.<br>
-The pre-trained weights will be downloaded automatically from Google Drive. <br>
-**Note :** You must download the dataset(s) first. 
+The pre-trained weights will be downloaded automatically from Google Drive. <br> 
 ```bash
-python main.py --phase inference --dataset <DATASET_NAME> 
-# Datasets : [amazon_book_2014, amazon_movie, amazon_video, amazon_baby, steam, amazon_beauty_personal, amazon_health]
+python main.py --phase inference --dataset $DATASET_NAME
 ```
 
 ### 2️⃣ Training phase
