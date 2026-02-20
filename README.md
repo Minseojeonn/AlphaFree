@@ -1,17 +1,16 @@
 # AlphaFree
-This repository provides the official implementation of AlphaFree, which has been accepted to ACM The Web Conference 2026. Detailed information is provided as follows.
+This repository provides the official implementation of **AlphaFree**, which has been accepted to ACM The Web Conference 2026. Detailed information is provided as follows.
 * **AlphaFree: Recommendation Free from Users, IDs, and GNNs** </br>
 Minseo Jeon, Junwoo Jung, Daewon Gwak, and Jinhong Jung</br>
 ACM Web Conference 2026 (WWW '26)
-
 
 ![overview](./assets/overview.png)
 
 ## ⚙️ Prerequisites
 You can install the required packages with a conda environment by typing the following command in your terminal:
 ```bash
-conda create -n AlphaFree python=3.9
-conda activate AlphaFree
+conda create -n alphafree python=3.9
+conda activate alphafree
 # install with appropriate pytorch-cuda version depending on your GPU/driver
 pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu117
 pip install -r requirements.txt
