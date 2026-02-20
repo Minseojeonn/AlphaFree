@@ -48,7 +48,7 @@ The dataset names used in the paper correspond to the following $DATASET_NAME ar
 * Beauty → amazon_beauty_personal
 * Health → amazon_health
 
-You can download each dataset using:
+You can download the data for each dataset, including the pre-trained weights of AlphaFree, using the following command:
 ```bash
 cd ./data
 chmod +x download.sh  
@@ -59,6 +59,8 @@ For example:
 ```
 ./download.sh --dataset amazon_movie
 ```
+
+Please refer to `data/README.md` for details on which datasets are downloaded and how they are stored.
 
 
 ## 🚀 Usage of AlphaFree
@@ -73,30 +75,30 @@ For example:
 In this repository, we assume that the inputs for each phase are already downloaded. For practical convenience, we introduce the stages in the order of computational cost:
 > Inference → Training → Preprocessing
 
-### Inference phase
-You can evaluate AlphaFree using the pre-trained weights.<br>
-The pre-trained weights will be downloaded automatically from Google Drive. <br> 
+### 🔎 Inference phase
+You can perform the inference phase using the command below. Using the pre-trained weights (`location`) on the given dataset, our model is evaluated on the test split, and the performance is reported in terms of Recall@20 and NDCG@20.
 ```bash
 python main.py --phase inference --dataset $DATASET_NAME
 ```
 
-### 2️⃣ Training phase
-You can train `AlphaFree` from scratch with the validated hyperparameters for each dataset by typing the following command in your terminal:
+### 🏋️ Training phase
+You can train `AlphaFree` from scratch using the preprocessed data (`location`) of the given dataset and the validated hyperparameters (`location`) for each dataset by typing the following command in your terminal:
+```bash
+python main.py --phase train --dataset $DATASET_NAME
+```
+
+**Note:** If you would like to train with different hyperparameters, please modify the configuration file (`location`) accordingly.
+
+### 🧩 Preprocessing phase
+Given the raw data (i.e., user–item interactions and item titles) of a dataset (`location`), the preprocessing phase generates LRs using a language model and performs augmentation. This phase can be executed using the following command:
 
 ```bash
-python main.py --phase train --dataset <DATASET_NAME> 
-# Datasets : [amazon_book_2014, amazon_movie, amazon_video, amazon_baby, steam, amazon_beauty_personal, amazon_health]
+python main.py --phase preprocessing --dataset $DATASET_NAME
 ```
-**Note:** You can modify the config file for each dataset to train with different hyperparameters.
 
-### 3️⃣ Preprocessing phase
-You can run the preprocessing phase of `AlphaFree` by typing the following command in your terminal. In this phase, you can generate Language Representations (LRs) and perform interaction/representation augmentation. 
-```bash
-python main.py --phase preprocessing --dataset <DATASET_NAME>
-# Datasets : [amazon_book_2014, amazon_movie, amazon_video, amazon_baby, steam, amazon_beauty_personal, amazon_health]
-```
-**Note1:** LR generation is not supported for the amazon_book_2014 and amazon_movie datasets, since we reuse the LRs provided by [AlphaRec repo](https://github.com/LehengTHU/AlphaRec) for both datasets. <br> 
-**Note2:** We also provide pre-generated LRs and augmented interactions/representations so you don’t need to spend time generating them.
+**Note1:** The LR generation is not supported for the amazon_book_2014 and amazon_movie datasets, since we reuse the LRs provided by [AlphaRec](https://github.com/LehengTHU/AlphaRec) for both datasets. <br> 
+**Note2:** For other datasets, we used LLaMA-3-8B. If you would like to use a different LM, please modify `data.py` (see 280 line) accordingly.
+**Note3:** If you would like to apply `AlphaFree` to your own dataset, please prepare the raw data according to the required format and run the preprocessing phase first.
 
 ### ✅ Recommendation demo
 Recommendation demo using the pre-trained AlphaFree model on the movie dataset. <br>
@@ -107,6 +109,8 @@ This class uses only the $\texttt{MLP}$ from a model trained with both $\texttt{
 python demo.py 
 ```
 **Note :** Before running the inference demo, **download the Amazon Movie dataset first.**
+
+
 ## 📈 Result of Pre-trained `AlphaFree`
 
 ### Trainlog
@@ -149,7 +153,7 @@ The reported results in the paper are as follows:
 
 
 * o.o.t. : Out of Time
-* o.o.m. : Out of Memory
+* o.o.m. : Out of Memory (VRAM)
 
 ### Validated hyperparameters of AlphaFree
 | **Hyperparam** | **Movie**  |**Book**   | **Video**  | **Baby**   | **Steam**  | **Beauty** | **Health** |
@@ -165,6 +169,6 @@ The reported results in the paper are as follows:
 * $\lambda_{\texttt{align}}$ : The alignment loss weight (`--lambda_align`).
 * $\tau_a$ : The alignment temperature (`--tau_a`).
 * $\tau_r$ : The recommendation temperature (`--tau_r`).
-* $d_{LR}$ : The dimension of Language Representations (Depends on the Language Model).
+* $d_{LR}$ : The dimension of Language Representations (Depends on language models).
 
 
