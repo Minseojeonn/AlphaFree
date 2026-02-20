@@ -11,7 +11,7 @@ You can install the required packages with a conda environment by typing the fol
 ```bash
 conda create -n alphafree python=3.9
 conda activate alphafree
-# We conduct our experiments using an RTX 4090 (24GB VRAM) under PyTorch 1.13 with CUDA 11.7.
+# We conducted our experiments using an RTX 4090 (24GB VRAM) under PyTorch 1.13 with CUDA 11.7.
 # Install with appropriate pytorch-cuda version depending on your GPU/driver.
 pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu117
 pip install -r requirements.txt
