@@ -9,7 +9,7 @@ class AlphaFreeRecDemo(torch.nn.Module):
         Demo class for inference with AlphaFree model
         This class only uses the original view for inference.
         
-        This class only supports the amazon_movie dataset, with a hard-coded number of items.
+        This class only supports the amazon_video dataset, with a hard-coded number of items.
         For other datasets, please modify the number of items and the loading of item_cf_embeds accordingly.
     """
     def __init__(self, args) -> None:
@@ -17,12 +17,12 @@ class AlphaFreeRecDemo(torch.nn.Module):
         self.tau = args.tau_r
         self.embed_size = args.hidden_size
         self.lm_model = args.lm_model
-        self.n_items = 25612 # default for amazon_movie
+        self.n_items = 25612 # default for amazon_video
         self.device = args.cuda
-        self.init_item_cf_embeds = np.load(args.data_path + args.dataset + '/item_info/item_cf_embeds_llama_array.npy', allow_pickle=True)
+        self.init_item_cf_embeds = np.load(args.data_path + args.dataset + '/item_info/item_cf_embeds_LLAMA_array.npy', allow_pickle=True)
         self.init_item_cf_embeds = torch.tensor(self.init_item_cf_embeds, dtype=torch.float32).cuda(self.device)
         self.init_embed_shape = self.init_item_cf_embeds.shape[1]
-        multiplier = 1/2
+        multiplier = 9/32
         
         # MLP origin
         self.mlp_origin = nn.Sequential(

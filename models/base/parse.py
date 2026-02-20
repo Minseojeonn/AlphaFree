@@ -10,7 +10,7 @@ def build_parser():
     parser.add_argument('--phase', type=str, default='train',
                         choices=['preprocessing', 'train', 'inference'],
                         help='The phase to run the model in.')
-    parser.add_argument('--dataset', type=str, default='amazon_movie',
+    parser.add_argument('--dataset', type=str, default='amazon_video',
                         help='Dataset name.')
     # General Args
     parser.add_argument('--model_name', type=str, default='AlphaFree',
@@ -85,7 +85,7 @@ def load_dataset_config(config_dir: str, dataset: str):
 def parse_args():
     # 1) minimal parse to know dataset/config_dir
     mini = argparse.ArgumentParser(add_help=False)
-    mini.add_argument('--dataset', type=str, default='amazon_movie')
+    mini.add_argument('--dataset', type=str, default='amazon_video')
     mini.add_argument('--config_dir', type=str, default='./configs')
     mini_args, _ = mini.parse_known_args()
 
