@@ -80,7 +80,7 @@ python main.py --phase preprocessing --dataset <DATASET_NAME>
 ### ✅ Recommendation demo
 Recommendation demo using the pre-trained AlphaFree model on the movie dataset. <br>
 To clearly indicate that we use only the original $\texttt{MLP}$ for inference, we provide a separate model <br> 
-implementation that includes only the original $\texttt{MLP}$ (./models/AlphaFree_inference.py).  
+implementation that includes only the original $\texttt{MLP}$ (./models/AlphaFreeRecDemo.py).  
 This class uses only the $\texttt{MLP}$ from a model trained with both $\texttt{MLP}^+$ (augmented view) and $\texttt{MLP}$ (original view). <br>
 ```bash
 python demo.py 
