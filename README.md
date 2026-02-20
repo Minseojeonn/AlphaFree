@@ -76,7 +76,7 @@ python main.py --phase preprocessing --dataset <DATASET_NAME>
 **Note1:** LR generation is not supported for the amazon_book_2014 and amazon_movie datasets, since we reuse the LRs provided by [AlphaRec repo](https://github.com/LehengTHU/AlphaRec) for both datasets. <br> 
 **Note2:** We also provide pre-generated LRs and augmented interactions/representations so you don’t need to spend time generating them.
 
-### ✅ Recommendation Demo
+### ✅ Recommendation demo
 Recommendation demo using the pre-trained AlphaFree model on the movie dataset. <br>
 To clearly indicate that we use only the original $\texttt{MLP}$ for inference, we provide a separate model <br> 
 implementation that includes only the original $\texttt{MLP}$ (./models/AlphaFree_inference.py).  
