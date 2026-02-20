@@ -11,7 +11,8 @@ You can install the required packages with a conda environment by typing the fol
 ```bash
 conda create -n alphafree python=3.9
 conda activate alphafree
-# install with appropriate pytorch-cuda version depending on your GPU/driver
+# We conduct our experiments using an RTX 4090 (24GB VRAM) under PyTorch 1.13 with CUDA 11.7.
+# Install with appropriate pytorch-cuda version depending on your GPU/driver.
 pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu117
 pip install -r requirements.txt
 ```
@@ -24,7 +25,6 @@ popd
 # If any error occurs, run the following command:
 conda install -c conda-forge libstdcxx-ng=13.1.0
 ```
-
 
 ## 📚 Datasets
 The statistics of datasets used in AlphaFree are summarized as follows. 
@@ -39,7 +39,8 @@ You can download the dataset using the bash script at `./data/download.sh`
 ```bash
 cd ./data
 chmod +x download.sh  
-./download.sh
+./download.sh --dataset <DATASET_NAME>
+# Datasets : [amazon_book_2014, amazon_movie, amazon_video, amazon_baby, steam, amazon_beauty_personal, amazon_health]
 ```
 
 ## 🚀 Usage
@@ -82,7 +83,7 @@ To clearly indicate that we use only the original $\texttt{MLP}$ for inference, 
 implementation that includes only the original $\texttt{MLP}$ (./models/AlphaFree_inference.py).  
 This class uses only the $\texttt{MLP}$ from a model trained with both $\texttt{MLP}^+$ (augmented view) and $\texttt{MLP}$ (original view). <br>
 ```bash
-python RecDemo.py 
+python demo.py 
 ```
 **Note :** Before running the inference demo, **download the Amazon Movie dataset first.**
 ## 📈 Result of Pre-trained `AlphaFree`
