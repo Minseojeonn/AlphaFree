@@ -101,14 +101,14 @@ python main.py --phase preprocessing --dataset $DATASET_NAME
 **Note3:** If you would like to apply `AlphaFree` to your own dataset, please prepare the raw data according to the required format and run the preprocessing phase first.
 
 ### ✅ Recommendation demo
-Recommendation demo using the pre-trained AlphaFree model on the movie dataset. <br>
+Recommendation demo using the pre-trained AlphaFree model on the video dataset. <br>
 To clearly indicate that we use only the original $\texttt{MLP}$ for inference, we provide a separate model <br> 
 implementation that includes only the original $\texttt{MLP}$ (./models/AlphaFreeRecDemo.py).  
 This class uses only the $\texttt{MLP}$ from a model trained with both $\texttt{MLP}^+$ (augmented view) and $\texttt{MLP}$ (original view). <br>
 ```bash
 python demo.py 
 ```
-**Note :** Before running the inference demo, **download the Amazon Movie dataset first.**
+**Note :** Before running the inference demo, **download the Amazon video dataset first.**
 
 
 ## 📈 Result of Pre-trained `AlphaFree`
