@@ -1,0 +1,5 @@
+K_c: 5
+lambda_align: 0.2
+tau_a: 0.1
+tau_r: 0.15
+lm_model: v3
