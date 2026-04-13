@@ -186,7 +186,7 @@ We report the validated hyperparameters for each dataset, selected based on vali
 ## 📚 Citation
 If you find this work useful, please cite:
 ```bibtex
-@article{DBLP:journals/corr/abs-2603-02653,
+@article{journals/corr/abs-2603-02653,
   author       = {Minseo Jeon and
                   Junwoo Jung and
                   Daewon Gwak and
