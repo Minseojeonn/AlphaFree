@@ -186,21 +186,27 @@ We report the validated hyperparameters for each dataset, selected based on vali
 ## 📚 Citation
 If you find this work useful, please cite:
 ```bibtex
-@article{journals/corr/abs-2603-02653,
+@inproceedings{conf/www/JeonJGJ26,
   author       = {Minseo Jeon and
                   Junwoo Jung and
                   Daewon Gwak and
                   Jinhong Jung},
+  editor       = {Hakim Hacid and
+                  Yoelle Maarek and
+                  Francesco Bonchi and
+                  Ido Guy and
+                  Emine Yilmaz},
   title        = {AlphaFree: Recommendation Free from Users, IDs, and GNNs},
-  journal      = {CoRR},
-  volume       = {abs/2603.02653},
+  booktitle    = {Proceedings of the {ACM} Web Conference 2026, {WWW} 2026, Dubai, United
+                  Arab Emirates, originally scheduled for April 13-17, 2026, rescheduled
+                  for June 29 - July 3, 2026},
+  pages        = {6309--6320},
+  publisher    = {{ACM}},
   year         = {2026},
-  url          = {https://doi.org/10.48550/arXiv.2603.02653},
-  doi          = {10.48550/ARXIV.2603.02653},
-  eprinttype   = {arXiv},
-  eprint       = {2603.02653},
-  timestamp    = {Wed, 08 Apr 2026 10:55:11 +0200},
-  biburl       = {https://dblp.org/rec/journals/corr/abs-2603-02653.bib},
+  url          = {https://doi.org/10.1145/3774904.3792355},
+  doi          = {10.1145/3774904.3792355},
+  timestamp    = {Tue, 14 Apr 2026 15:25:42 +0200},
+  biburl       = {https://dblp.org/rec/conf/www/JeonJGJ26.bib},
   bibsource    = {dblp computer science bibliography, https://dblp.org}
 }
 ```
